@@ -228,6 +228,8 @@ M.show_result = function(problem_name, result)
     local result_buf = result_bufs[problem_name]
 
     if not result_buf or not vim.api.nvim_buf_is_valid(result_buf) then
+        result_buf = vim.api.nvim_get_current_buf()
+        result_bufs[problem_name] = result_buf
         vim.api.nvim_buf_set_option(result_buf, 'buftype', 'nofile')
         vim.api.nvim_buf_set_option(result_buf, 'buflisted', false)
         vim.api.nvim_buf_set_option(result_buf, 'swapfile', false)
@@ -235,7 +237,6 @@ M.show_result = function(problem_name, result)
         vim.api.nvim_buf_set_option(result_buf, 'filetype', 'nvim-oldfile')
         vim.api.nvim_buf_set_keymap(result_buf, 'n', 'q', ':q!<CR>',
                                     {nowait = true, noremap = true, silent = true})
-
     end
 
     vim.api.nvim_buf_set_option(result_buf, 'modifiable', true)
